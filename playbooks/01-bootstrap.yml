@@ -1,0 +1,8 @@
+---
+# 01 — Bootstrap: SELinux, firewalld, sshd, usuario app, fail2ban, linger
+# Corre como root. Reiniciar tras este playbook si SELinux cambió de estado.
+- hosts: root_user
+  become: yes
+
+  roles:
+    - role: ops.forge.base

@@ -1,0 +1,9 @@
+---
+# 03 — Despliegue de la aplicación
+# Corre como app (runtime_user).
+- hosts: default
+  become: yes
+
+  roles:
+    - role: ops.forge.app
+    - role: ops.forge.quadlet

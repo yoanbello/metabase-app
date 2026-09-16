@@ -1,0 +1,15 @@
+---
+# 02 — Provisión: Podman, registry, Caddy, PostgreSQL, Quadlet, backup, monitor
+# Corre como app (runtime_user).
+- hosts: default
+  become: yes
+
+  roles:
+    - role: ops.forge.podman
+    - role: ops.forge.registry
+    - role: ops.forge.caddy
+    - role: ops.forge.postgres
+    - role: ops.forge.quadlet
+    - role: ops.forge.postgres_db
+    - role: ops.forge.backup
+    - role: ops.forge.monitor

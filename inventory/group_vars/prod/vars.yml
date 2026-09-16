@@ -1,0 +1,18 @@
+---
+# ============================================================
+# Variables del entorno PROD
+# ============================================================
+
+project_name: "miprojecto"
+server_ip: "IP_DEL_SERVER_PROD"
+domain: "miprojecto.ejemplo.com"
+
+caddy_upstream: "django-app"
+caddy_upstream_port: "8000"
+db_engine: "postgres"
+postgres_app_db: "miprojecto"
+postgres_app_user: "app"
+postgres_app_password: ""
+app_name: "django-app"
+app_volume_name: "forge-miprojecto-data"
+runtime_ssh_public_key: ""

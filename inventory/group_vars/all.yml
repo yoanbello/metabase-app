@@ -1,0 +1,53 @@
+---
+# ============================================================
+# Variables globales de este proyecto (comunes a todos los entornos)
+# ============================================================
+
+# ---- runtime rootless ----
+runtime_user: "app"
+runtime_group: "app"
+runtime_user_home: "/home/{{ runtime_user }}"
+# runtime_ssh_public_key: "ssh-ed25519 AAAA... tu@email"
+
+# ---- firewall ----
+firewall_allow_ports:
+  - "22"
+  - "80"
+  - "443"
+
+# ---- SELinux ----
+selinux_state: "enforcing"
+selinux_policy: "targeted"
+
+# ---- Caddy (email global, rest por entorno) ----
+caddy_email: "admin@ejemplo.com"
+
+# ---- Registry (imágenes de contenedores) ----
+registry_type: "generic"          # generic | ecr
+registry_url: ""
+registry_username: ""
+registry_region: "us-east-1"
+registry_rotate_enabled: false
+
+# ---- Monitor ----
+beszel_hub_url: ""
+beszel_agent_key: ""
+
+# ---- Backup (común) ----
+backup_source: "/srv/backups"
+backup_dir_log: "/var/log/forge"
+backup_schedule: "*-*-* 01:30:00"
+backup_retention_days: 14
+backup_dest_drive: "backups"
+rclone_config_dir: "/etc/rclone"
+rclone_drive_root_folder_id: ""
+rclone_drive_team_drive: ""
+rclone_drive_shared_with_me: false
+rclone_config_defined: false
+rclone_drive_sa_filename: "drive-service-account.json"
+
+# ---- Puerto rootless ----
+podman_unprivileged_port_start: 80
+
+# ---- Directorios base ----
+data_dir: "/srv/data"

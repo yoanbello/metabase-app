@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.vault_pass
+.vault_password
+*.tar.gz
+.DS_Store
+
+# Secretos (solo plantillas en git)
+inventory/group_vars/**/secrets.yml
+inventory/host_vars/**/secrets.yml

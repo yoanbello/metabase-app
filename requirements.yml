@@ -1,0 +1,11 @@
+---
+# forge — dependencias de infraestructura
+# Solo cambiar versiones si se re-testea con otra colección.
+
+collections:
+  - name: ops.forge
+    version: 2.0.0
+  - name: containers.podman
+  - name: ansible.posix
+  - name: community.general
+  - name: fedora.linux_system_roles

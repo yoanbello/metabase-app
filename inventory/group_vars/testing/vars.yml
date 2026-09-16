@@ -1,0 +1,27 @@
+---
+# ============================================================
+# Variables del entorno TESTING
+# ============================================================
+
+project_name: "miprojecto"
+server_ip: "192.168.1.50"            # ← IP real de tu VM
+domain: "miprojecto.local"
+
+# Caddy upstream (hostname del contenedor en la red interna)
+caddy_upstream: "django-app"
+caddy_upstream_port: "8000"
+
+# Motor de BD: "postgres" o "mariadb"
+db_engine: "postgres"
+
+# Postgres (nombre BD, usuario)
+postgres_app_db: "miprojecto"
+postgres_app_user: "app"
+postgres_app_password: ""           # → en secrets.yml
+
+# App
+app_name: "django-app"
+app_volume_name: "forge-miprojecto-data"
+
+# SSH key del usuario app (lo que pones aquí se instala en el servidor)
+runtime_ssh_public_key: ""           # ← tu llave pública

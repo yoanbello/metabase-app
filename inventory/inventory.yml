@@ -1,0 +1,43 @@
+# Inventario multi-entorno de este proyecto.
+#
+# - Cada entorno tiene su group_vars/<entorno>/vars.yml (config) y secrets.yml (vault).
+# - root_user usa root/22 solo para 01-bootstrap.
+# - default usa runtime_user (app)/22 para 02 y 03.
+
+all:
+  children:
+    # Grupo operativo (post-bootstrap): app / puerto 22
+    default:
+      children:
+        prod:
+        testing:
+
+    # Grupo de bootstrap: root / puerto 22
+    root_user:
+      hosts:
+        prod:
+          ansible_host: "{{ server_ip }}"
+          ansible_user: root
+          ansible_port: 22
+          ansible_python_interpreter: python3
+        testing:
+          ansible_host: "{{ server_ip }}"
+          ansible_user: root
+          ansible_port: 22
+          ansible_python_interpreter: python3
+
+prod:
+  hosts:
+    prod:
+      ansible_host: "{{ server_ip }}"
+      ansible_user: "{{ runtime_user }}"
+      ansible_port: 22
+      ansible_python_interpreter: python3
+
+testing:
+  hosts:
+    testing:
+      ansible_host: "{{ server_ip }}"
+      ansible_user: "{{ runtime_user }}"
+      ansible_port: 22
+      ansible_python_interpreter: python3
