@@ -1,27 +1,39 @@
 ---
 # ============================================================
-# Variables del entorno TESTING
+# Variables del entorno TESTING — Metabase
 # ============================================================
 
-project_name: "miprojecto"
+project_name: "metabase-app"
 server_ip: "192.168.1.50"            # ← IP real de tu VM
-domain: "miprojecto.local"
+domain: "metabase.testing.local"
 
-# Caddy upstream (hostname del contenedor en la red interna)
-caddy_upstream: "django-app"
-caddy_upstream_port: "8000"
+# Caddy (reverse proxy → Metabase publicado en 127.0.0.1:3000)
+caddy_email: "admin@ejemplo.com"
+caddy_upstream: "127.0.0.1"
+caddy_upstream_port: "3000"
 
-# Motor de BD: "postgres" o "mariadb"
+# Motor de BD: "postgres"
 db_engine: "postgres"
 
-# Postgres (nombre BD, usuario)
-postgres_app_db: "miprojecto"
-postgres_app_user: "app"
+# Postgres (crea la BD y el usuario de la app)
+postgres_app_db: "metabase"
+postgres_app_user: "metabase"
 postgres_app_password: ""           # → en secrets.yml
 
-# App
-app_name: "django-app"
-app_volume_name: "forge-miprojecto-data"
+# App — Metabase (imagen pública de Docker Hub)
+app_name: "metabase"
+app_image: "docker.io/metabase/metabase:v0.53.8"
+app_host_port: "3000"
+app_container_port: "3000"
+app_healthcheck: "wget -q --spider http://127.0.0.1:3000/ || exit 1"
+app_env_vars:
+  MB_DB_TYPE: "postgres"
+  MB_DB_DBNAME: "{{ postgres_app_db }}"
+  MB_DB_USER: "{{ postgres_app_user }}"
+  MB_DB_PASS: "{{ postgres_app_password }}"
+  MB_DB_HOST: "{{ postgres_service_name }}"
+  MB_DB_PORT: "5432"
+  MB_SITE_NAME: "forge testing"
 
 # SSH key del usuario app (lo que pones aquí se instala en el servidor)
 runtime_ssh_public_key: ""           # ← tu llave pública

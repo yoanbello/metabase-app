@@ -1,64 +1,58 @@
-# forge-template
+# metabase-app
 
-Template para proyectos que consumen `ops.forge` v2.0.0 (Podman rootless + Caddy + Quadlet).
+Proyecto de ejemplo: despliega **Metabase** (BI, imagen pública) sobre la pila `ops.forge` v2.1.0.
 
-**No editar forge directamente.** Este template es el punto de partida para cada proyecto.
+## Qué hace
 
-## Arranque rápido
+- **PostgreSQL** en contenedor rootless (Quadlet) con red interna.
+- **Metabase** (`metabase/metabase`) conectado a esa BD, publicado en `:3000`.
+- **Caddy** como reverse proxy con TLS (80/443) hacia Metabase.
+- Backups con systemd-timer + monitor Beszel.
+
+## Requisitos
+
+- VM **Rocky Linux 9.2 o 10** con acceso SSH root.
+- cualquier distribución compatible con la colección `ops.forge`.
+
+## Uso
 
 ```bash
-# 1. Clonar
-git clone git@github.com:yoanbello/forge-template.git mi-proyecto
-cd mi-proyecto
-
-# 2. Entorno Python + dependencias
-python3 -m venv .venv
-source .venv/bin/activate
+# 1. Entorno Python + dependencias
+python3 -m venv .venv && source .venv/bin/activate
 pip install "ansible-core>=2.16"
 ansible-galaxy collection install -r requirements.yml
 
-# 3. Secretos (una vez)
+# 2. Secretos (una vez)
 echo "mi-vault-pass" > vault_pass && chmod 600 vault_pass
 export ANSIBLE_VAULT_PASSWORD_FILE=./vault_pass
 ansible-vault encrypt inventory/group_vars/testing/secrets.yml
 
-# 4. Editar IP dominio y llave en inventory/group_vars/testing/vars.yml
+# 3. Editar la IP y la llave SSH del usuario app en inventory/group_vars/testing/vars.yml
 
-# 5. Bootstrap (una vez, como root)
+# 4. Bootstrap (una vez, como root)
 ansible-playbook playbooks/01-bootstrap.yml -l testing
 
-# 6. Reiniciar si SELinux cambió
+# 5. Reiniciar si SELinux cambió
 ssh root@IP reboot
 
-# 7. Provisionar y desplegar
+# 6. Provisionar y desplegar
 ansible-playbook playbooks/02-provision.yml -l testing
 ansible-playbook playbooks/03-app.yml -l testing
 ```
 
-## Qué cambia entre proyecto y proyecto
+## Acceso
 
-Solo `inventory/group_vars/<env>/vars.yml` (IP, dominio, motor de BD) y `secrets.yml` (passwords).
+- Abrir `https://<tu-dominio>` (Metabase y Caddy).
+- Con `domain` como `.local` (sin DNS público) Metabase no tendrá cert ACME; usarás HTTP directo a `:3000`.
 
-## Estructura
+## Variabes clave
 
-```
-ansible.cfg                  # config de Ansible
-requirements.yml             # ops.forge v2.0.0 + deps
-inventory/
-  inventory.yml              # multi-entorno (prod, testing)
-  group_vars/all.yml         # vars globales (runtime_user, firewall, etc.)
-  group_vars/testing/vars.yml
-  group_vars/testing/secrets.yml  # vault (no sube a git)
-  group_vars/prod/vars.yml
-  group_vars/prod/secrets.yml
-playbooks/
-  01-bootstrap.yml           # root → SELinux, firewalld, sshd, app, fail2ban
-  02-provision.yml           # app  → podman, caddy, postgres, quadlet, backup, monitor
-  03-app.yml                 # app  → despliegue de la aplicación
-```
-
-## Forge como dependencia
-
-- `ops.forge` v2.0.0 se instala con `ansible-galaxy collection install -r requirements.yml`.
-- Los roles se invocan con FQCN: `ops.forge.base`, `ops.forge.podman`, etc.
-- Para actualizar forge: cambiar `version: 2.0.0` en `requirements.yml` y probar en un entorno de testing primero.
+| Variable | Qué hace |
+|---|---|
+| `server_ip` | IP del servidor |
+| `domain` | Dominio público para TLS |
+| `app_image` | Imagen de la app (Metabase) |
+| `app_host_port` / `app_container_port` | Puerto publicado / interno |
+| `caddy_upstream` / `caddy_upstream_port` | A dónde apunta Caddy |
+| `app_env_vars` | Variables de entorno → `EnvironmentFile` |
+| `postgres_app_db/user/password` | BD + usuario + password |
