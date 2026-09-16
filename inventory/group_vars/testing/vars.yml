@@ -4,13 +4,15 @@
 # ============================================================
 
 project_name: "metabase-app"
-server_ip: "192.168.1.50"            # ← IP real de tu VM
-domain: "metabase.testing.local"
+server_ip: "192.168.122.155"
+domain: "192.168.122.155"
 
 # Caddy (reverse proxy → Metabase publicado en 127.0.0.1:3000)
 caddy_email: "admin@ejemplo.com"
 caddy_upstream: "127.0.0.1"
 caddy_upstream_port: "3000"
+# IP privada → sin DNS/TLS: Caddy sirve solo HTTP (test)
+caddy_http_only: true
 
 # Motor de BD: "postgres"
 db_engine: "postgres"
@@ -36,4 +38,4 @@ app_env_vars:
   MB_SITE_NAME: "forge testing"
 
 # SSH key del usuario app (lo que pones aquí se instala en el servidor)
-runtime_ssh_public_key: ""           # ← tu llave pública
+runtime_ssh_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOkLCllpmHbp1DGNmY5y11k4J5wwdEFLBe6NoPfQ9hG ybello@digitalprojex.com"

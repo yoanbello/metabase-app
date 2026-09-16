@@ -1,6 +1,6 @@
 # metabase-app
 
-Proyecto de ejemplo: despliega **Metabase** (BI, imagen pública) sobre la pila `ops.forge` v2.1.0.
+Proyecto de ejemplo: despliega **Metabase** (BI, imagen pública) sobre la pila `ops.forge` v2.1.1.
 
 ## Qué hace
 
