@@ -2,7 +2,7 @@
 
 Template para proyectos que consumen `ops.forge` v2.0.0 (Podman rootless + Caddy + Quadlet).
 
-**No editar forge直接amente.** Este template es el punto de partida para cada proyecto.
+**No editar forge directamente.** Este template es el punto de partida para cada proyecto.
 
 ## Arranque rápido
 
