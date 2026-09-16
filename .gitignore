@@ -2,6 +2,7 @@
 __pycache__/
 .vault_pass
 .vault_password
+vault_pass
 *.tar.gz
 .DS_Store
 
